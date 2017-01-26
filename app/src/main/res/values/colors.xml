@@ -11,6 +11,10 @@
     <color name="color6">#607D8B</color>
     <color name="color7">#FF5722</color>
     <color name="color8">#FFA000</color>
+    <color name="color9">#ee9ca7</color>
+    <color name="color10">#ffdde1</color>
+    <color name="color11">#fc00ff</color>
+    <color name="color12">#00dbde</color>
     <color name ="colorWhite">#ffffff</color>
     <color name="dimGrey">#505050</color>
 </resources>

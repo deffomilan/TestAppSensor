@@ -5,22 +5,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private GradientBackgroundPainter gradientBackgroundPainter;
     private TextView signInNotAccount;
+    private Button signIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         checkFirstRun();
 
         View backgroundImage = findViewById(R.id.activity_main);
         signInNotAccount = (TextView) findViewById(R.id.signUpNoAcc);
+        signIn = (Button) findViewById(R.id.signIn);
 
         final int[] drawables = new int[3];
         drawables[0] = R.drawable.gradient_1;
@@ -33,7 +37,14 @@ public class MainActivity extends AppCompatActivity {
         signInNotAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(MainActivity.this,Signup.class);
+                startActivity(new Intent(MainActivity.this, Signup.class));
+            }
+        });
+
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(MainActivity.this, TryAct.class);
                 startActivity(in);
             }
         });

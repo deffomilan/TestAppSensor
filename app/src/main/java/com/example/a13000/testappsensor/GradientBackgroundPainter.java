@@ -16,8 +16,8 @@ import java.util.Random;
 
 public class GradientBackgroundPainter {
 
-    private static final int MIN = 4000;
-    private static final int MAX = 5000;
+    private static final int MIN = 8000;
+    private static final int MAX = 10000;
 
     private final Random random;
     private final Handler handler;
