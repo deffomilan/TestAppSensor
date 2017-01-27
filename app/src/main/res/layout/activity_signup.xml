@@ -9,111 +9,98 @@
     android:orientation="vertical"
     tools:context="com.example.a13000.testappsensor.Signup">
 
-    <!--Slanted effect mode -->
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/profPic"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        app:srcCompat="@mipmap/ic_account_circle_white_24dp" />
 
-        <RelativeLayout
-            android:layout_width="900dp"
-            android:layout_height="300dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="552dp"
-            android:background="@color/colorWhite"
-            android:rotation="30"
-            android:scaleX="100"
-            android:scaleY="6"></RelativeLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="(Press here to select an image)"
+        android:textColor="@color/colorWhite" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="text"
+        android:background="@drawable/backview2"
+        android:padding="15dp"
+        android:drawableLeft="@mipmap/ic_face_white_24dp"
+        android:drawablePadding="15dp"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite" />
 
+    <EditText
+        android:id="@+id/regdNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:ems="10"
+        android:background="@drawable/backview2"
+        android:hint="Registration Number"
+        android:inputType="textCapCharacters"
+        android:padding="15dp"
+        android:drawableLeft="@mipmap/ic_receipt_white_24dp"
+        android:drawablePadding="15dp"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite" />
 
-            <ImageView
-                android:id="@+id/profPic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="145dp"
-                app:srcCompat="@android:drawable/ic_input_add" />
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:ems="10"
+        android:hint="E-mail"
+        android:background="@drawable/backview2"
+        android:inputType="textEmailAddress"
+        android:padding="15dp"
+        android:drawableLeft="@mipmap/ic_mail_outline_white_24dp"
+        android:drawablePadding="15dp"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="(Please select an image)"
-                android:textColor="@color/colorWhite" />
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:ems="10"
+        android:drawableLeft="@mipmap/ic_vpn_key_white_24dp"
+        android:drawablePadding="15dp"
+        android:hint="Password"
+        android:background="@drawable/backview2"
+        android:inputType="textPassword"
+        android:padding="15dp"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite" />
 
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:layout_marginTop="40dp"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="text"
-                android:padding="15dp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite" />
+    <Button
+        android:id="@+id/signUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="55dp"
+        android:layout_weight="0"
+        android:background="@drawable/backview"
+        android:text="Sign up"
+        android:textColor="@color/colorWhite" />
 
-            <EditText
-                android:id="@+id/regdNo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:ems="10"
-                android:hint="Reggistration Number"
-                android:inputType="textCapCharacters"
-                android:padding="15dp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite" />
-
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:ems="10"
-                android:hint="E-mail"
-                android:inputType="textEmailAddress"
-                android:padding="15dp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite" />
-
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:padding="15dp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite" />
-
-            <Button
-                android:id="@+id/signUp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:layout_marginTop="30dp"
-                android:layout_weight="0"
-                android:background="@drawable/backview"
-                android:text="Sign up"
-                android:textColor="@color/colorWhite" />
-
-        </LinearLayout>
-    </RelativeLayout>
 </LinearLayout>

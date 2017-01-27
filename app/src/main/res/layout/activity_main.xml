@@ -26,7 +26,7 @@
 
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
@@ -36,7 +36,7 @@
         android:drawableLeft="@mipmap/ic_supervisor_account_white_24dp"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Username"
+        android:hint="E-mail"
         android:inputType="text"
         android:padding="15dp"
         android:textColor="@color/colorWhite"
