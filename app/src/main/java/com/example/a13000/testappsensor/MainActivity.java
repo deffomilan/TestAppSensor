@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         gradientBackgroundPainter = new GradientBackgroundPainter(backgroundImage, drawables);
         gradientBackgroundPainter.start();
 
+        // For animation during enter
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @SuppressLint("NewApi")
