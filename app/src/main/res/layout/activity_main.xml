@@ -17,118 +17,152 @@
         android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:padding="10dp"
+        android:layout_marginTop="50dp"
         android:text="Compliant Board"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="40dp" />
 
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="90dp"
-        android:background="@drawable/backview"
-        android:drawableLeft="@mipmap/ic_supervisor_account_white_24dp"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="E-mail"
-        android:inputType="text"
-        android:padding="15dp"
-        android:textColor="@color/colorWhite"
-        android:textColorHint="@color/colorWhite" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/backview"
-        android:drawableLeft="@mipmap/ic_https_white_24dp"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="15dp"
-        android:textColor="@color/colorWhite"
-        android:textColorHint="@color/colorWhite" />
-
-    <!--<android.support.design.widget.TextInputLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:layout_marginLeft="15dp"-->
-    <!--android:layout_marginRight="15dp"-->
-    <!--android:layout_marginTop="40dp"-->
-    <!--android:textColorHint="@color/colorWhite">-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/input_name"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:drawableLeft="@mipmap/ic_supervisor_account_white_24dp"-->
-    <!--android:drawablePadding="20dp"-->
-    <!--android:fontFamily="cursive"-->
-    <!--android:hint="Username"-->
-    <!--android:inputType="text"-->
-    <!--android:textColor="@color/colorWhite"-->
-    <!--android:textColorHighlight="@color/colorWhite"-->
-    <!--android:textColorHint="@color/colorWhite" />-->
-    <!--</android.support.design.widget.TextInputLayout>-->
-
-    <!--<android.support.design.widget.TextInputLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:layout_marginLeft="15dp"-->
-    <!--android:layout_marginRight="15dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:textColorHint="@color/colorWhite">-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/input_pass"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:drawableLeft="@mipmap/ic_https_white_24dp"-->
-    <!--android:drawablePadding="20dp"-->
-    <!--android:fontFamily="cursive"-->
-    <!--android:hint="Password"-->
-    <!--android:inputType="text"-->
-    <!--android:textColor="@color/colorWhite"-->
-    <!--android:textColorHint="@color/colorWhite" />-->
-    <!--</android.support.design.widget.TextInputLayout>-->
-
     <TextView
-        android:id="@+id/signUpNoAcc"
+        android:id="@+id/alreadyText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="No Account yet? Sign up now!"
+        android:layout_marginTop="90dp"
+        android:text="Already a user? Sign in below "
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        android:textSize="16dp" />
-    <!--Sign in button bichh ma parrna lai ....-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:textSize="15dp" />
 
-        <Button
-            android:id="@+id/signIn"
-            android:layout_width="wrap_content"
+    <!--<EditText-->
+    <!--android:id="@+id/email"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:layout_marginRight="15dp"-->
+    <!--android:layout_marginTop="150dp"-->
+    <!--android:background="@drawable/backview"-->
+    <!--android:drawableLeft="@mipmap/ic_supervisor_account_white_24dp"-->
+    <!--android:drawablePadding="10dp"-->
+    <!--android:ems="10"-->
+    <!--android:hint="E-mail"-->
+    <!--android:inputType="text"-->
+    <!--android:padding="15dp"-->
+    <!--android:textColor="@color/colorWhite"-->
+    <!--android:textColorHint="@color/colorWhite" />-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/password"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:layout_marginRight="15dp"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:background="@drawable/backview"-->
+    <!--android:drawableLeft="@mipmap/ic_https_white_24dp"-->
+    <!--android:drawablePadding="10dp"-->
+    <!--android:ems="10"-->
+    <!--android:hint="Password"-->
+    <!--android:inputType="textPassword"-->
+    <!--android:padding="15dp"-->
+    <!--android:textColor="@color/colorWhite"-->
+    <!--android:textColorHint="@color/colorWhite" />-->
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:textColorHint="@color/colorWhite">
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp"
-            android:background="@drawable/backview"
-            android:text="Sign In"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite" />
-    </RelativeLayout>
+            android:drawableLeft="@mipmap/ic_supervisor_account_white_24dp"
+            android:drawablePadding="20dp"
+            android:hint="E-mail"
+            android:inputType="text"
+            android:textColor="@color/colorWhite"
+            android:textColorHighlight="@color/colorWhite"
+            android:textColorHint="@color/colorWhite" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/colorWhite">
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@mipmap/ic_https_white_24dp"
+            android:drawablePadding="20dp"
+            android:hint="Password"
+            android:inputType="text"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite" />
+    </android.support.design.widget.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/rememberMe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:text="Remember me"
+        android:textColor="@color/colorWhite" />
+
+    <Button
+        android:id="@+id/signIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/backview"
+        android:text="Sign In"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="16dp" />
+
+    <Button
+        android:id="@+id/signUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/backview"
+        android:text="No account yet?Sign up"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/forgotPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="end|center"
+        android:text="Forgot Password?"
+        android:layout_marginRight="18dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="15dp"/>
 </LinearLayout>

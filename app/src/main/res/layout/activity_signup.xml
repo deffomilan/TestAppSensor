@@ -18,7 +18,7 @@
         app:srcCompat="@mipmap/ic_account_circle_white_24dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/pressHere"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -39,7 +39,7 @@
         android:background="@drawable/backview2"
         android:padding="15dp"
         android:drawableLeft="@mipmap/ic_face_white_24dp"
-        android:drawablePadding="15dp"
+        android:drawablePadding="25dp"
         android:textColor="@color/colorWhite"
         android:textColorHint="@color/colorWhite" />
 
@@ -55,7 +55,7 @@
         android:inputType="textCapCharacters"
         android:padding="15dp"
         android:drawableLeft="@mipmap/ic_receipt_white_24dp"
-        android:drawablePadding="15dp"
+        android:drawablePadding="25dp"
         android:textColor="@color/colorWhite"
         android:textColorHint="@color/colorWhite" />
 
@@ -71,7 +71,7 @@
         android:inputType="textEmailAddress"
         android:padding="15dp"
         android:drawableLeft="@mipmap/ic_mail_outline_white_24dp"
-        android:drawablePadding="15dp"
+        android:drawablePadding="25dp"
         android:textColor="@color/colorWhite"
         android:textColorHint="@color/colorWhite" />
 
@@ -83,7 +83,7 @@
         android:layout_marginRight="30dp"
         android:ems="10"
         android:drawableLeft="@mipmap/ic_vpn_key_white_24dp"
-        android:drawablePadding="15dp"
+        android:drawablePadding="25dp"
         android:hint="Password"
         android:background="@drawable/backview2"
         android:inputType="textPassword"
@@ -99,6 +99,7 @@
         android:layout_marginRight="25dp"
         android:layout_marginTop="55dp"
         android:layout_weight="0"
+        android:textStyle="bold"
         android:background="@drawable/backview"
         android:text="Sign up"
         android:textColor="@color/colorWhite" />

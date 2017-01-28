@@ -3,6 +3,7 @@ package com.example.a13000.testappsensor;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -12,16 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private GradientBackgroundPainter gradientBackgroundPainter;
-    private TextView signInNotAccount,title;
+    private TextView signUp,title,alreadyText;
     private Button signIn;
     private EditText email,password;
     private ViewGroup activity_main;
+    private CheckBox rememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +35,14 @@ public class MainActivity extends AppCompatActivity {
         checkFirstRun();
 
         View backgroundImage = findViewById(R.id.activity_main);
-        signInNotAccount = (TextView) findViewById(R.id.signUpNoAcc);
+        signUp = (TextView) findViewById(R.id.signUp);
         signIn = (Button) findViewById(R.id.signIn);
         title = (TextView) findViewById(R.id.titleText);
         email = (EditText) findViewById(R.id.email);
+        alreadyText = (TextView) findViewById(R.id.alreadyText);
         activity_main = (ViewGroup) findViewById(R.id.activity_main);
         password = (EditText) findViewById(R.id.password);
+        rememberMe = (CheckBox) findViewById(R.id.rememberMe);
 
         final int[] drawables = new int[3];
         drawables[0] = R.drawable.gradient_1;
@@ -45,12 +50,25 @@ public class MainActivity extends AppCompatActivity {
         drawables[2] = R.drawable.gradient_3;
 
         signIn.setVisibility(View.INVISIBLE);
-        signInNotAccount.setVisibility(View.INVISIBLE);
+        signUp.setVisibility(View.INVISIBLE);
         email.setVisibility(View.INVISIBLE);
         password.setVisibility(View.INVISIBLE);
+        alreadyText.setVisibility(View.INVISIBLE);
+        rememberMe.setVisibility(View.INVISIBLE);
 
         gradientBackgroundPainter = new GradientBackgroundPainter(backgroundImage, drawables);
         gradientBackgroundPainter.start();
+
+        // Setting custom font ki text vannum ...
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.otf");
+        Typeface custom_font1 = Typeface.createFromAsset(getAssets(),  "fonts/Airways_PERSONAL_USE_ONLY.ttf");
+        signIn.setTypeface(custom_font);
+        signUp.setTypeface(custom_font);
+        title.setTypeface(custom_font1);
+        password.setTypeface(custom_font);
+        alreadyText.setTypeface(custom_font);
+        email.setTypeface(custom_font);
+        rememberMe.setTypeface(custom_font);
 
         // For animation during enter
         final Handler handler = new Handler();
@@ -61,11 +79,11 @@ public class MainActivity extends AppCompatActivity {
                 Fade fade = new Fade();
                 fade.setDuration(5000);
                 TransitionManager.beginDelayedTransition(activity_main,fade);
-                toggleView(title,signInNotAccount,signIn,email,password);
+                toggleView(title,signUp,signIn,email,password,alreadyText,rememberMe);
             }
         }, 100);
 
-        signInNotAccount.setOnClickListener(new View.OnClickListener() {
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, Signup.class));
