@@ -20,7 +20,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private GradientBackgroundPainter gradientBackgroundPainter;
-    private TextView signUp,title,alreadyText;
+    private TextView signUp,title,alreadyText,forgetPass;
     private Button signIn;
     private EditText email,password;
     private ViewGroup activity_main;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         alreadyText = (TextView) findViewById(R.id.alreadyText);
         activity_main = (ViewGroup) findViewById(R.id.activity_main);
         password = (EditText) findViewById(R.id.password);
+        forgetPass = ( TextView) findViewById(R.id.forgotPass);
         rememberMe = (CheckBox) findViewById(R.id.rememberMe);
 
         final int[] drawables = new int[3];
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         email.setVisibility(View.INVISIBLE);
         password.setVisibility(View.INVISIBLE);
         alreadyText.setVisibility(View.INVISIBLE);
+        forgetPass.setVisibility(View.INVISIBLE);
         rememberMe.setVisibility(View.INVISIBLE);
 
         gradientBackgroundPainter = new GradientBackgroundPainter(backgroundImage, drawables);
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         password.setTypeface(custom_font);
         alreadyText.setTypeface(custom_font);
         email.setTypeface(custom_font);
+        forgetPass.setTypeface(custom_font);
         rememberMe.setTypeface(custom_font);
 
         // For animation during enter
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 Fade fade = new Fade();
                 fade.setDuration(5000);
                 TransitionManager.beginDelayedTransition(activity_main,fade);
-                toggleView(title,signUp,signIn,email,password,alreadyText,rememberMe);
+                toggleView(title,signUp,signIn,email,password,alreadyText,rememberMe,forgetPass);
             }
         }, 100);
 
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
         if (isFirstRun) {
             String title = "Welcome to Complaint Board.\n";
-            String message = "App under development for final year project.\n\n\n-By Milan Pander";
+            String message = "App under development for final year project.\n\n\n-By Milan Pandey";
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true);
