@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(MainActivity.this, TryAct.class);
+                Intent in = new Intent(MainActivity.this, FeedPage.class);
                 startActivity(in);
             }
         });

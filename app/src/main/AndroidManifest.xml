@@ -27,8 +27,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".TryAct" />
-        <activity android:name=".FeedPage"></activity>
+        <activity android:name=".FeedPage" />
+        <activity android:name=".PostDo"></activity>
     </application>
 
 </manifest>
