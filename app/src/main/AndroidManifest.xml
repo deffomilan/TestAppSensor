@@ -28,6 +28,9 @@
             android:theme="@style/AppTheme.NoTitle"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".FeedPage" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".PostDo"></activity>
     </application>
 

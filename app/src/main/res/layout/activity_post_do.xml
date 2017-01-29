@@ -27,7 +27,7 @@
 
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/titleEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -41,7 +41,7 @@
 
 
     <EditText
-        android:id="@+id/multiAutoCompleteTextView"
+        android:id="@+id/descEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter description here ..."
@@ -55,7 +55,7 @@
         android:layout_weight="4"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/postButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Post"
