@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -72,7 +73,7 @@ public class PostDo extends AppCompatActivity {
         final String titleEntered = titleEditText.getText().toString().trim();
         final String descEntered = descEditText.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(titleEntered) && !TextUtils.isEmpty(descEntered)) {
+        if (!TextUtils.isEmpty(titleEntered) && !TextUtils.isEmpty(descEntered) && imageUri != null) {
             progressDialog.show();
             StorageReference filePath = storageRef.child("Images").child(imageUri.getLastPathSegment());
             filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -83,9 +84,11 @@ public class PostDo extends AppCompatActivity {
                     dataRefImg.child("title").setValue(titleEntered);
                     dataRefImg.child("desc").setValue(descEntered);
                     dataRefImg.child("image").setValue(downloadURL.toString());
+
                     progressDialog.dismiss();
-                    Intent in = new Intent(PostDo.this,FeedPage.class);
-                    in.putExtra("flag",ValueFetchActivity.postToFeed);
+
+                    Intent in = new Intent(PostDo.this, FeedPage.class);
+                    in.putExtra("flag", ValueFetchActivity.postToFeed);
                     startActivity(in);
                 }
             });
@@ -94,6 +97,8 @@ public class PostDo extends AppCompatActivity {
                 titleEditText.setError("You must enter a title");
             } else if (TextUtils.isEmpty(descEntered)) {
                 descEditText.setError("Please enter small description so that we can know about the problem clearly and rectify it sooner.");
+            } else if (imageUri == null) {
+                Toast.makeText(this, "You need to select an image too.", Toast.LENGTH_LONG).show();
             }
         }
     }
