@@ -88,7 +88,7 @@ public class PostDo extends AppCompatActivity {
                     progressDialog.dismiss();
 
                     Intent in = new Intent(PostDo.this, FeedPage.class);
-                    in.putExtra("flag", ValueFetchActivity.postToFeed);
+                    in.putExtra("flag", 0);
                     startActivity(in);
                 }
             });

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -23,6 +24,8 @@ public class FeedPage extends AppCompatActivity {
 
     private RecyclerView listComplaints;
     private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,18 @@ public class FeedPage extends AppCompatActivity {
         listComplaints.setHasFixedSize(true);
         listComplaints.setLayoutManager(new LinearLayoutManager(this));
         PullRefreshLayout layout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if(firebaseAuth.getCurrentUser() == null){
+//                    Intent in = new Intent(FeedPage.this,MainActivity.class);
+//                    in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(in);
+//                }
+//            }
+//        };
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("ComplaintHead");
 
@@ -54,20 +69,23 @@ public class FeedPage extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+//        firebaseAuth.addAuthStateListener(firebaseAuthListener);
+
         FirebaseRecyclerAdapter<Complaints, ComplaintsHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Complaints, ComplaintsHolder>(
                         Complaints.class,
                         R.layout.list_card_view,
                         ComplaintsHolder.class,
                         databaseReference
-        ){
-            @Override
-            protected void populateViewHolder(ComplaintsHolder viewHolder, Complaints model, int position) {
-                viewHolder.setTitle(model.getTitle());
-                viewHolder.setDesc(model.getDesc());
-                viewHolder.setImage(getApplicationContext(),model.getImage());
-            }
-        };
+                ) {
+                    @Override
+                    protected void populateViewHolder(ComplaintsHolder viewHolder, Complaints model, int position) {
+                        viewHolder.setTitle(model.getTitle());
+                        viewHolder.setDesc(model.getDesc());
+                        viewHolder.setImage(getApplicationContext(), model.getImage());
+                    }
+                };
         listComplaints.setAdapter(firebaseRecyclerAdapter);
     }
 
@@ -105,7 +123,7 @@ public class FeedPage extends AppCompatActivity {
             feedDescView.setText(desc);
         }
 
-        public void setImage(Context context,String image){
+        public void setImage(Context context, String image) {
             ImageView feedImageView = (ImageView) view.findViewById(R.id.feedImageView);
             Picasso.with(context).load(image).into(feedImageView);
         }
