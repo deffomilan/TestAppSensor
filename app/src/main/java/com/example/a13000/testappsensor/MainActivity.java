@@ -2,6 +2,7 @@ package com.example.a13000.testappsensor;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -42,11 +43,16 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseRef;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Signing you in ... \n\n ............");
+        progressDialog.setCancelable(false);
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseRef = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -130,12 +136,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkLogin(String emailVal, String passwordVal) {
+        progressDialog.show();
         firebaseAuth.signInWithEmailAndPassword(emailVal, passwordVal).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     userExistOrNot();
                 } else {
+                    progressDialog.dismiss();
                     Toast.makeText(MainActivity.this, "Sorry! We cannot log you in. Please recheck you email and password", Toast.LENGTH_LONG).show();
                 }
             }
@@ -148,17 +156,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild(UID)){
+                    progressDialog.dismiss();
                     Intent in = new Intent(MainActivity.this,FeedPage.class);
                     in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(in);
                 }else{
+                    progressDialog.dismiss();
                     Toast.makeText(MainActivity.this, "Sorry, You need to setup your account.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                // Begin safe ..
+                progressDialog.dismiss();
             }
         });
     }

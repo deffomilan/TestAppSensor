@@ -50,6 +50,7 @@ public class FeedPage extends AppCompatActivity {
         };
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("ComplaintHead");
+        databaseReference.keepSynced(true);
 
         int callingActivity = getIntent().getIntExtra("flag", 1);
         if (callingActivity == 0) {
