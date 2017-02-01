@@ -89,7 +89,7 @@
             android:drawableLeft="@mipmap/ic_supervisor_account_white_24dp"
             android:drawablePadding="20dp"
             android:hint="E-mail"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:textColor="@color/colorWhite"
             android:textColorHighlight="@color/colorWhite"
             android:textColorHint="@color/colorWhite" />
