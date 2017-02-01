@@ -119,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
                 String passwordVal = password.getText().toString().trim();
                 if (!TextUtils.isEmpty(emailVal) && !TextUtils.isEmpty(passwordVal)) {
                     checkLogin(emailVal, passwordVal);
+                }else if (TextUtils.isEmpty(emailVal)){
+                    email.setError("You need to enter your e-mail here");
+                }else if(TextUtils.isEmpty(passwordVal)){
+                    password.setError("You need a password to sign, obviously!");
                 }
             }
         });
