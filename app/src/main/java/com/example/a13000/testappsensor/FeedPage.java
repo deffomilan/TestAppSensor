@@ -3,6 +3,7 @@ package com.example.a13000.testappsensor;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,17 +37,17 @@ public class FeedPage extends AppCompatActivity {
         listComplaints.setLayoutManager(new LinearLayoutManager(this));
         PullRefreshLayout layout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                if(firebaseAuth.getCurrentUser() == null){
-//                    Intent in = new Intent(FeedPage.this,MainActivity.class);
-//                    in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(in);
-//                }
-//            }
-//        };
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    Intent in = new Intent(FeedPage.this, MainActivity.class);
+                    in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(in);
+                }
+            }
+        };
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("ComplaintHead");
 
@@ -70,7 +71,7 @@ public class FeedPage extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-//        firebaseAuth.addAuthStateListener(firebaseAuthListener);
+        firebaseAuth.addAuthStateListener(firebaseAuthListener);
 
         FirebaseRecyclerAdapter<Complaints, ComplaintsHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Complaints, ComplaintsHolder>(
@@ -88,22 +89,6 @@ public class FeedPage extends AppCompatActivity {
                 };
         listComplaints.setAdapter(firebaseRecyclerAdapter);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        setTitle("Complaints");
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.addPost) {
-            startActivity(new Intent(FeedPage.this, PostDo.class));
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     public static class ComplaintsHolder extends RecyclerView.ViewHolder {
         View view;
@@ -128,4 +113,28 @@ public class FeedPage extends AppCompatActivity {
             Picasso.with(context).load(image).into(feedImageView);
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        setTitle("Complaints");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.addPost) {
+            startActivity(new Intent(FeedPage.this, PostDo.class));
+        }
+        else if (item.getItemId() == R.id.logOut){
+            firebaseAuth.signOut();
+            Intent in = new Intent(FeedPage.this,MainActivity.class);
+            in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(in);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
+
+

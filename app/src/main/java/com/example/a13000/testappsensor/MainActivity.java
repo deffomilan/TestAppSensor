@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.transition.Fade;
 import android.transition.TransitionManager;
 import android.view.View;
@@ -16,21 +18,38 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private GradientBackgroundPainter gradientBackgroundPainter;
-    private TextView signUp,title,alreadyText,forgetPass;
+    private TextView signUp, title, alreadyText, forgetPass;
     private Button signIn;
-    private EditText email,password;
+    private EditText email, password;
     private ViewGroup activity_main;
     private CheckBox rememberMe;
+
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         checkFirstRun();
 
@@ -42,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         alreadyText = (TextView) findViewById(R.id.alreadyText);
         activity_main = (ViewGroup) findViewById(R.id.activity_main);
         password = (EditText) findViewById(R.id.password);
-        forgetPass = ( TextView) findViewById(R.id.forgotPass);
+        forgetPass = (TextView) findViewById(R.id.forgotPass);
         rememberMe = (CheckBox) findViewById(R.id.rememberMe);
 
         final int[] drawables = new int[3];
@@ -62,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
         gradientBackgroundPainter.start();
 
         // Setting custom font ki text vannum ...
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Quicksand-Regular.otf");
-        Typeface custom_font1 = Typeface.createFromAsset(getAssets(),  "fonts/Airways_PERSONAL_USE_ONLY.ttf");
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Quicksand-Regular.otf");
+        Typeface custom_font1 = Typeface.createFromAsset(getAssets(), "fonts/Airways_PERSONAL_USE_ONLY.ttf");
         signIn.setTypeface(custom_font);
         signUp.setTypeface(custom_font);
         title.setTypeface(custom_font1);
@@ -81,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 Fade fade = new Fade();
                 fade.setDuration(5000);
-                TransitionManager.beginDelayedTransition(activity_main,fade);
-                toggleView(title,signUp,signIn,email,password,alreadyText,rememberMe,forgetPass);
+                TransitionManager.beginDelayedTransition(activity_main, fade);
+                toggleView(title, signUp, signIn, email, password, alreadyText, rememberMe, forgetPass);
             }
         }, 100);
 
@@ -96,11 +115,48 @@ public class MainActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(MainActivity.this, FeedPage.class);
-                startActivity(in);
+                String emailVal = email.getText().toString().trim();
+                String passwordVal = password.getText().toString().trim();
+                if (!TextUtils.isEmpty(emailVal) && !TextUtils.isEmpty(passwordVal)) {
+                    checkLogin(emailVal, passwordVal);
+                }
             }
         });
 
+    }
+
+    private void checkLogin(String emailVal, String passwordVal) {
+        firebaseAuth.signInWithEmailAndPassword(emailVal, passwordVal).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    userExistOrNot();
+                } else {
+                    Toast.makeText(MainActivity.this, "Sorry! We cannot log you in. Please recheck you email and password", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void userExistOrNot() {
+        final String UID = firebaseAuth.getCurrentUser().getUid();
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(UID)){
+                    Intent in = new Intent(MainActivity.this,FeedPage.class);
+                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(in);
+                }else{
+                    Toast.makeText(MainActivity.this, "Sorry, You need to setup your account.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -127,9 +183,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void toggleView(View... views){
-        for(View current : views){
-            if(current.getVisibility() == View.INVISIBLE){
+    private void toggleView(View... views) {
+        for (View current : views) {
+            if (current.getVisibility() == View.INVISIBLE) {
                 current.setVisibility(View.VISIBLE);
             }
         }
