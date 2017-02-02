@@ -29,7 +29,7 @@ public class PostDo extends AppCompatActivity {
     private Button postButton;
     private EditText titleEditText, descEditText;
     private static final int GALLERY_INTENT = 1;
-    private Uri imageUri = null;
+    private Uri resultUri = null;
 
     private ProgressDialog progressDialog;
 
@@ -73,10 +73,10 @@ public class PostDo extends AppCompatActivity {
         final String titleEntered = titleEditText.getText().toString().trim();
         final String descEntered = descEditText.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(titleEntered) && !TextUtils.isEmpty(descEntered) && imageUri != null) {
+        if (!TextUtils.isEmpty(titleEntered) && !TextUtils.isEmpty(descEntered) && resultUri != null) {
             progressDialog.show();
-            StorageReference filePath = storageRef.child("Images").child(imageUri.getLastPathSegment());
-            filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            StorageReference filePath = storageRef.child("Images").child(resultUri.getLastPathSegment());
+            filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadURL = taskSnapshot.getDownloadUrl();
@@ -97,7 +97,7 @@ public class PostDo extends AppCompatActivity {
                 titleEditText.setError("You must enter a title");
             } else if (TextUtils.isEmpty(descEntered)) {
                 descEditText.setError("Please enter small description so that we can know about the problem clearly and rectify it sooner.");
-            } else if (imageUri == null) {
+            } else if (resultUri == null) {
                 Toast.makeText(this, "You need to select an image too.", Toast.LENGTH_LONG).show();
             }
         }
@@ -107,7 +107,7 @@ public class PostDo extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
-            imageUri = data.getData();
+            Uri imageUri = data.getData();
             CropImage.activity(imageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(16, 9)
@@ -116,7 +116,7 @@ public class PostDo extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
+                resultUri = result.getUri();
                 imageButton.setImageURI(resultUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();

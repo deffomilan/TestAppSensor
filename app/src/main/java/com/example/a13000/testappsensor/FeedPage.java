@@ -43,7 +43,7 @@ public class FeedPage extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null) {
                     Intent in = new Intent(FeedPage.this, MainActivity.class);
-                    in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(in);
                 }
             }
@@ -65,7 +65,21 @@ public class FeedPage extends AppCompatActivity {
         layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                onStart();
+                FirebaseRecyclerAdapter<Complaints, ComplaintsHolder> firebaseRecyclerAdapter =
+                        new FirebaseRecyclerAdapter<Complaints, ComplaintsHolder>(
+                                Complaints.class,
+                                R.layout.list_card_view,
+                                ComplaintsHolder.class,
+                                databaseReference
+                        ) {
+                            @Override
+                            protected void populateViewHolder(ComplaintsHolder viewHolder, Complaints model, int position) {
+                                viewHolder.setTitle(model.getTitle());
+                                viewHolder.setDesc(model.getDesc());
+                                viewHolder.setImage(getApplicationContext(), model.getImage());
+                            }
+                        };
+                listComplaints.setAdapter(firebaseRecyclerAdapter);
             }
         });
         layout.setRefreshing(false);
@@ -134,7 +148,7 @@ public class FeedPage extends AppCompatActivity {
         else if (item.getItemId() == R.id.logOut){
             firebaseAuth.signOut();
             Intent in = new Intent(FeedPage.this,MainActivity.class);
-            in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(in);
         }
         return super.onOptionsItemSelected(item);

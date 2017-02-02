@@ -19,13 +19,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -38,8 +43,10 @@ public class Signup extends AppCompatActivity {
     private ImageView profPic;
     private final int galleryCodeRequest = 1;
     private ViewGroup activity_signup;
+    private Uri resultUri = null;
 
     private FirebaseAuth firebaseAuth;
+    private StorageReference storageReference;
     private DatabaseReference databaseReference;
 
     private ProgressDialog progressDialog;
@@ -52,6 +59,7 @@ public class Signup extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        storageReference = FirebaseStorage.getInstance().getReference().child("ProfilePicture");
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Setting up your account!\n\nPlease be patience!!");
 
@@ -122,11 +130,19 @@ public class Signup extends AppCompatActivity {
                 if (!TextUtils.isEmpty(nameVal) &&
                         !TextUtils.isEmpty(emailVal) &&
                         !TextUtils.isEmpty(regdNoVal) &&
-                        !TextUtils.isEmpty(passwordVal)) {
+                        !TextUtils.isEmpty(passwordVal) &&
+                        resultUri != null) {
                     // This method is down below ..
                     registrationBegins(nameVal, emailVal, regdNoVal, passwordVal);
+                }else if(TextUtils.isEmpty(nameVal)){
+                    name.setError("This field cannot be empty");
+                }else if (TextUtils.isEmpty(regdNoVal)){
+                    regdno.setError("This field cannot be empty");
+                }else if (TextUtils.isEmpty(passwordVal)){
+                    password.setError("Password is must");
+                }else if (resultUri == null){
+                    Toast.makeText(Signup.this, "Please select a profile picture too.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -136,7 +152,7 @@ public class Signup extends AppCompatActivity {
                 Intent galleryIntent = new Intent();
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent,galleryCodeRequest);
+                startActivityForResult(galleryIntent, galleryCodeRequest);
             }
         });
     }
@@ -156,15 +172,20 @@ public class Signup extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Ali ghumaundo process ... will explain personally ...
-                    String uid = firebaseAuth.getCurrentUser().getUid();
-                    DatabaseReference newDatabaseRef = databaseReference.child(uid);
-                    newDatabaseRef.child("name").setValue(nameVal);
-                    newDatabaseRef.child("regdno").setValue(regdNoVal);
-                    newDatabaseRef.child("image").setValue("For simplicity nothing here now");
-
+                    StorageReference filePath = storageReference.child(resultUri.getLastPathSegment());
+                    filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            String uid = firebaseAuth.getCurrentUser().getUid();
+                            Uri downloadURL = taskSnapshot.getDownloadUrl();
+                            final DatabaseReference newDatabaseRef = databaseReference.child(uid);
+                            newDatabaseRef.child("name").setValue(nameVal);
+                            newDatabaseRef.child("regdno").setValue(regdNoVal);
+                            newDatabaseRef.child("image").setValue(downloadURL.toString());
+                        }
+                    });
                     progressDialog.dismiss();
                     Intent in = new Intent(Signup.this, FeedPage.class);
-                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(in);
                 }
             }
@@ -174,18 +195,18 @@ public class Signup extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == galleryCodeRequest && resultCode == RESULT_OK){
+        if (requestCode == galleryCodeRequest && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
             CropImage.activity(imageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setCropShape(CropImageView.CropShape.OVAL)
-                    .setAspectRatio(2,2)
+                    .setAspectRatio(1, 1)
                     .start(this);
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
+                resultUri = result.getUri();
                 profPic.setImageURI(resultUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
