@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseRef.keepSynced(true);
 
         checkFirstRun();
 

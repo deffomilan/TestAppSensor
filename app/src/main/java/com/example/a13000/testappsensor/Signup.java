@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class Signup extends AppCompatActivity {
 
@@ -31,6 +35,8 @@ public class Signup extends AppCompatActivity {
     private EditText name, email, regdno, password;
     private Button signUp;
     private TextView pressHere;
+    private ImageView profPic;
+    private final int galleryCodeRequest = 1;
     private ViewGroup activity_signup;
 
     private FirebaseAuth firebaseAuth;
@@ -57,6 +63,7 @@ public class Signup extends AppCompatActivity {
         regdno = (EditText) findViewById(R.id.regdNo);
         password = (EditText) findViewById(R.id.password);
         signUp = (Button) findViewById(R.id.signUp);
+        profPic = (ImageView) findViewById(R.id.profPic);
         pressHere = (TextView) findViewById(R.id.pressHere);
         activity_signup = (ViewGroup) findViewById(R.id.activity_signup);
 
@@ -122,6 +129,16 @@ public class Signup extends AppCompatActivity {
 
             }
         });
+
+        profPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent,galleryCodeRequest);
+            }
+        });
     }
 
     private void toggleView(View... views) {
@@ -152,6 +169,28 @@ public class Signup extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == galleryCodeRequest && resultCode == RESULT_OK){
+            Uri imageUri = data.getData();
+            CropImage.activity(imageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setCropShape(CropImageView.CropShape.OVAL)
+                    .setAspectRatio(2,2)
+                    .start(this);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                profPic.setImageURI(resultUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 
     @Override

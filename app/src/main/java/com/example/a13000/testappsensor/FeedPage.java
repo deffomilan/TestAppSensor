@@ -24,7 +24,7 @@ import com.squareup.picasso.Picasso;
 public class FeedPage extends AppCompatActivity {
 
     private RecyclerView listComplaints;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference,databaseReferenceForUsers;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
@@ -50,7 +50,11 @@ public class FeedPage extends AppCompatActivity {
         };
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("ComplaintHead");
-        databaseReference.keepSynced(true);
+
+        //birrsyo yessle k garrxa vanera ...
+        //Figure out later ...
+        databaseReferenceForUsers = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReferenceForUsers.keepSynced(true);
 
         int callingActivity = getIntent().getIntExtra("flag", 1);
         if (callingActivity == 0) {
