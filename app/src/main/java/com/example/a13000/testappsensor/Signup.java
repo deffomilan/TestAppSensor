@@ -164,7 +164,7 @@ public class Signup extends AppCompatActivity {
 
                     progressDialog.dismiss();
                     Intent in = new Intent(Signup.this, FeedPage.class);
-                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(in);
                 }
             }

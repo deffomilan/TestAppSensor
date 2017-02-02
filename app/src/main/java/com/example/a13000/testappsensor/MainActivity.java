@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 if(dataSnapshot.hasChild(UID)){
                     progressDialog.dismiss();
                     Intent in = new Intent(MainActivity.this,FeedPage.class);
-                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(in);
                 }else{
                     progressDialog.dismiss();

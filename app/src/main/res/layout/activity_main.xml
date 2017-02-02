@@ -113,7 +113,7 @@
             android:drawableLeft="@mipmap/ic_https_white_24dp"
             android:drawablePadding="20dp"
             android:hint="Password"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite" />
     </android.support.design.widget.TextInputLayout>
