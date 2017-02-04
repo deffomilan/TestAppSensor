@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Compliant Board</string>
+    <string name="google">google</string>
+    <string name="sign_in">Sign In</string>
+    <string name="e_mail">E-mail</string>
+    <string name="remember_me">Remember me</string>
+    <string name="already_a_user_sign_in_below">Already a user? Sign in below</string>
+    <string name="compliant_board">Compliant Board</string>
+    <string name="no_account_yet_sign_up">No account yet?Sign up</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="password">Password</string>
+    <string name="google1">google</string>
+    <string name="google2">google</string>
+    <string name="google3">google</string>
 </resources>

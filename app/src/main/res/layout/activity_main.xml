@@ -18,23 +18,25 @@
         android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Compliant Board"
-        android:gravity="center"
+        android:layout_gravity="fill"
+        android:layout_marginTop="40dp"
         android:layout_weight="4"
+        android:gravity="center"
+        android:text="@string/compliant_board"
         android:textColor="@color/colorWhite"
-        android:textSize="40sp" />
+        android:textSize="50sp" />
 
 
     <TextView
         android:id="@+id/alreadyText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
-        android:text="Already a user? Sign in below "
-        android:gravity="center"
-        android:textColor="@color/colorWhite"
+        android:layout_gravity="fill"
+        android:layout_marginTop="50dp"
         android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/already_a_user_sign_in_below"
+        android:textColor="@color/colorWhite"
         android:textSize="15sp" />
 
     <!--<EditText-->
@@ -78,9 +80,10 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
         android:layout_weight="2"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:textColorHint="@color/colorWhite">
 
         <EditText
@@ -89,7 +92,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/ic_supervisor_account_white_24dp"
             android:drawablePadding="20dp"
-            android:hint="E-mail"
+            android:hint="@string/e_mail"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorWhite"
             android:textColorHighlight="@color/colorWhite"
@@ -101,10 +104,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_weight="2"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="8dp"
+        android:layout_weight="2"
         android:textColorHint="@color/colorWhite">
 
         <EditText
@@ -114,10 +117,11 @@
             android:layout_marginTop="20dp"
             android:drawableLeft="@mipmap/ic_https_white_24dp"
             android:drawablePadding="20dp"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            tools:ignore="RtlHardcoded" />
     </android.support.design.widget.TextInputLayout>
 
     <CheckBox
@@ -127,9 +131,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="20dp"
-        android:padding="10dp"
         android:checked="true"
-        android:text="Remember me"
+        android:padding="10dp"
+        android:text="@string/remember_me"
         android:textColor="@color/colorWhite" />
 
     <Button
@@ -138,10 +142,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_weight="2"
         android:layout_marginTop="30dp"
+        android:layout_weight="2"
         android:background="@drawable/backview"
-        android:text="Sign In"
+        android:text="@string/sign_in"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="18sp" />
@@ -153,75 +157,80 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/backview"
-        android:text="No account yet?Sign up"
-        android:textAllCaps="false"
         android:layout_weight="2"
+        android:background="@drawable/backview"
+        android:text="@string/no_account_yet_sign_up"
+        android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="18sp" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
-        android:layout_weight = "1">
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/google"
             android:id="@+id/addall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:padding="2dp"
             android:adjustViewBounds="false"
+            android:contentDescription="@string/google1"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
-            android:contentDescription="google" />
+            android:src="@mipmap/google"
+            tools:ignore="NestedWeights" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/google"
             android:id="@+id/google"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:adjustViewBounds="false"
+            android:contentDescription="@string/google2"
             android:cropToPadding="false"
+            android:padding="2dp"
             android:scaleType="fitCenter"
-            android:contentDescription="google" />
+            android:src="@mipmap/google" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/google"
             android:id="@+id/facebook"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:adjustViewBounds="false"
+            android:contentDescription="@string/google3"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
-            android:contentDescription="google" />
+            android:padding="2dp"
+            android:src="@mipmap/google" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/google"
             android:id="@+id/twitter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:adjustViewBounds="false"
+            android:contentDescription="@string/google"
             android:cropToPadding="false"
+            android:padding="2dp"
             android:scaleType="fitCenter"
-            android:layout_marginRight="30dp"
-            android:contentDescription="google" />
+            android:src="@mipmap/google" />
 
         <TextView
             android:id="@+id/forgotPass"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:layout_marginRight="18dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill"
+            android:layout_marginRight="15dp"
+            android:text="@string/forgot_password"
             android:textColor="@color/colorWhite"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </LinearLayout>
-
 </LinearLayout>

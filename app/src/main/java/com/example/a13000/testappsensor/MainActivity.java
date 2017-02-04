@@ -15,6 +15,8 @@ import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText email, password;
     private ViewGroup activity_main;
     private CheckBox rememberMe;
-    private ImageView addall,google,facebook,twitter;
+    private ImageView addall, google, facebook, twitter;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseRef;
@@ -77,13 +79,15 @@ public class MainActivity extends AppCompatActivity {
         forgetPass = (TextView) findViewById(R.id.forgotPass);
         rememberMe = (CheckBox) findViewById(R.id.rememberMe);
 
+        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.milkshake);
+
         final int[] drawables = new int[3];
         drawables[0] = R.drawable.gradient_1;
         drawables[1] = R.drawable.gradient_2;
         drawables[2] = R.drawable.gradient_3;
 
         // Managing Visibility ...
-        setVisible(signIn,signUp,email,password,alreadyText,forgetPass,rememberMe,google,twitter,facebook,addall);
+        setVisible(signIn, signUp, email, password, alreadyText, forgetPass, rememberMe, google, twitter, facebook, addall);
 
         gradientBackgroundPainter = new GradientBackgroundPainter(backgroundImage, drawables);
         gradientBackgroundPainter.start();
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 Fade fade = new Fade();
                 fade.setDuration(5000);
                 TransitionManager.beginDelayedTransition(activity_main, fade);
-                toggleView(title, signUp, signIn, email, password, alreadyText, rememberMe, forgetPass,addall);
+                toggleView(title, signUp, signIn, email, password, alreadyText, rememberMe, forgetPass, addall);
             }
         }, 100);
 
@@ -127,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
                 String passwordVal = password.getText().toString().trim();
                 if (!TextUtils.isEmpty(emailVal) && !TextUtils.isEmpty(passwordVal)) {
                     checkLogin(emailVal, passwordVal);
-                }else if (TextUtils.isEmpty(emailVal)){
+                } else if (TextUtils.isEmpty(emailVal)) {
                     email.setError("You need to enter your e-mail here");
-                }else if(TextUtils.isEmpty(passwordVal)){
+                } else if (TextUtils.isEmpty(passwordVal)) {
                     password.setError("You need a password to sign, obviously!");
                 }
             }
@@ -138,7 +142,42 @@ public class MainActivity extends AppCompatActivity {
         addall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleView(google,facebook,twitter);
+                toggleView(google, facebook, twitter);
+            }
+        });
+
+        google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(myAnim);
+                // Add working code after here google sign in part vanna khojeko ...
+
+
+            }
+        });
+
+        facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(myAnim);
+                // Facebook ko affai le banauna parrxa so later to be done ...
+
+
+            }
+        });
+
+        twitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        v.startAnimation(myAnim);
+                        // Twitter ko lai ni affai le banaune parrxa so paxi garrney ...
+
+
+                    }
+                });
             }
         });
 
@@ -164,12 +203,12 @@ public class MainActivity extends AppCompatActivity {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(UID)){
+                if (dataSnapshot.hasChild(UID)) {
                     progressDialog.dismiss();
-                    Intent in = new Intent(MainActivity.this,FeedPage.class);
+                    Intent in = new Intent(MainActivity.this, FeedPage.class);
                     in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(in);
-                }else{
+                } else {
                     progressDialog.dismiss();
                     Toast.makeText(MainActivity.this, "Sorry, You need to setup your account.", Toast.LENGTH_SHORT).show();
                 }
@@ -215,8 +254,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setVisible(View... views){
-        for(View item : views){
+
+    // Testing left to be done .....
+    @SuppressLint("NewApi")
+    public void setVisible(View... views) {
+        for (View item : views) {
             item.setVisibility(View.INVISIBLE);
         }
     }
