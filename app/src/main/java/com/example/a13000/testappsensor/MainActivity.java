@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText email, password;
     private ViewGroup activity_main;
     private CheckBox rememberMe;
+    private ImageView addall,google,facebook,twitter;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseRef;
@@ -65,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
         signIn = (Button) findViewById(R.id.signIn);
         title = (TextView) findViewById(R.id.titleText);
         email = (EditText) findViewById(R.id.email);
+        facebook = (ImageView) findViewById(R.id.facebook);
+        google = (ImageView) findViewById(R.id.google);
+        twitter = (ImageView) findViewById(R.id.twitter);
+        addall = (ImageView) findViewById(R.id.addall);
         alreadyText = (TextView) findViewById(R.id.alreadyText);
         activity_main = (ViewGroup) findViewById(R.id.activity_main);
         password = (EditText) findViewById(R.id.password);
@@ -76,13 +82,8 @@ public class MainActivity extends AppCompatActivity {
         drawables[1] = R.drawable.gradient_2;
         drawables[2] = R.drawable.gradient_3;
 
-        signIn.setVisibility(View.INVISIBLE);
-        signUp.setVisibility(View.INVISIBLE);
-        email.setVisibility(View.INVISIBLE);
-        password.setVisibility(View.INVISIBLE);
-        alreadyText.setVisibility(View.INVISIBLE);
-        forgetPass.setVisibility(View.INVISIBLE);
-        rememberMe.setVisibility(View.INVISIBLE);
+        // Managing Visibility ...
+        setVisible(signIn,signUp,email,password,alreadyText,forgetPass,rememberMe,google,twitter,facebook,addall);
 
         gradientBackgroundPainter = new GradientBackgroundPainter(backgroundImage, drawables);
         gradientBackgroundPainter.start();
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 Fade fade = new Fade();
                 fade.setDuration(5000);
                 TransitionManager.beginDelayedTransition(activity_main, fade);
-                toggleView(title, signUp, signIn, email, password, alreadyText, rememberMe, forgetPass);
+                toggleView(title, signUp, signIn, email, password, alreadyText, rememberMe, forgetPass,addall);
             }
         }, 100);
 
@@ -131,6 +132,13 @@ public class MainActivity extends AppCompatActivity {
                 }else if(TextUtils.isEmpty(passwordVal)){
                     password.setError("You need a password to sign, obviously!");
                 }
+            }
+        });
+
+        addall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleView(google,facebook,twitter);
             }
         });
 
@@ -204,6 +212,12 @@ public class MainActivity extends AppCompatActivity {
             if (current.getVisibility() == View.INVISIBLE) {
                 current.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    public void setVisible(View... views){
+        for(View item : views){
+            item.setVisibility(View.INVISIBLE);
         }
     }
 }

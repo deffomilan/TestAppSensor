@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -20,9 +21,9 @@
         android:layout_marginTop="50dp"
         android:text="Compliant Board"
         android:gravity="center"
-        android:layout_weight="5"
+        android:layout_weight="4"
         android:textColor="@color/colorWhite"
-        android:textSize="40dp" />
+        android:textSize="40sp" />
 
 
     <TextView
@@ -34,7 +35,7 @@
         android:gravity="center"
         android:textColor="@color/colorWhite"
         android:layout_weight="1"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 
     <!--<EditText-->
     <!--android:id="@+id/email"-->
@@ -92,7 +93,8 @@
             android:inputType="textEmailAddress"
             android:textColor="@color/colorWhite"
             android:textColorHighlight="@color/colorWhite"
-            android:textColorHint="@color/colorWhite" />
+            android:textColorHint="@color/colorWhite"
+            tools:ignore="RtlHardcoded" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -134,8 +136,6 @@
         android:id="@+id/signIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_weight="2"
@@ -144,14 +144,12 @@
         android:text="Sign In"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
-        android:textSize="16dp" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/signUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
@@ -160,17 +158,70 @@
         android:textAllCaps="false"
         android:layout_weight="2"
         android:textColor="@color/colorWhite"
-        android:textSize="16dp" />
+        android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/forgotPass"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="end|center"
-        android:text="Forgot Password?"
-        android:layout_marginRight="18dp"
-        android:textColor="@color/colorWhite"
-        android:layout_weight="1"
-        android:textSize="15dp"/>
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_weight = "1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/google"
+            android:id="@+id/addall"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            android:contentDescription="google" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/google"
+            android:id="@+id/google"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            android:contentDescription="google" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/google"
+            android:id="@+id/facebook"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            android:contentDescription="google" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/google"
+            android:id="@+id/twitter"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            android:layout_marginRight="30dp"
+            android:contentDescription="google" />
+
+        <TextView
+            android:id="@+id/forgotPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:layout_marginRight="18dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
 </LinearLayout>
