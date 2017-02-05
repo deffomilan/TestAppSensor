@@ -80,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
         rememberMe = (CheckBox) findViewById(R.id.rememberMe);
 
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.milkshake);
+        final Animation myAnimBounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        final Animation myAnimZoom = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+
+        email.setFocusable(false);
+        email.setFocusableInTouchMode(true);
 
         final int[] drawables = new int[3];
         drawables[0] = R.drawable.gradient_1;
@@ -117,9 +122,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 100);
 
+        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+            }
+        });
+
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                password.startAnimation(myAnimBounce);
+            }
+        });
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                signUp.startAnimation(myAnimZoom);
                 startActivity(new Intent(MainActivity.this, Signup.class));
             }
         });

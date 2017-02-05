@@ -15,6 +15,8 @@ import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -75,6 +77,8 @@ public class Signup extends AppCompatActivity {
         pressHere = (TextView) findViewById(R.id.pressHere);
         activity_signup = (ViewGroup) findViewById(R.id.activity_signup);
 
+        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.milkshake);
+
         // Setting everything invisible for first 100 milliseconds ...
         name.setVisibility(View.INVISIBLE);
         email.setVisibility(View.INVISIBLE);
@@ -134,13 +138,17 @@ public class Signup extends AppCompatActivity {
                         resultUri != null) {
                     // This method is down below ..
                     registrationBegins(nameVal, emailVal, regdNoVal, passwordVal);
-                }else if(TextUtils.isEmpty(nameVal)){
+                } else if (TextUtils.isEmpty(nameVal)) {
+                    signUp.startAnimation(animation);
                     name.setError("This field cannot be empty");
-                }else if (TextUtils.isEmpty(regdNoVal)){
+                } else if (TextUtils.isEmpty(regdNoVal)) {
+                    signUp.startAnimation(animation);
                     regdno.setError("This field cannot be empty");
-                }else if (TextUtils.isEmpty(passwordVal)){
+                } else if (TextUtils.isEmpty(passwordVal)) {
+                    signUp.startAnimation(animation);
                     password.setError("Password is must");
-                }else if (resultUri == null){
+                } else if (resultUri == null) {
+                    signUp.startAnimation(animation);
                     Toast.makeText(Signup.this, "Please select a profile picture too.", Toast.LENGTH_SHORT).show();
                 }
             }
