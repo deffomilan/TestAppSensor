@@ -108,20 +108,21 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="8dp"
         android:layout_weight="2"
-        android:textColorHint="@color/colorWhite">
+        android:textColorHint="@color/colorWhite"
+        app:passwordToggleEnabled="true">
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:drawableLeft="@mipmap/ic_https_white_24dp"
+            android:drawableLeft="@mipmap/ic_vpn_key_white_24dp"
+            android:drawableStart="@mipmap/ic_vpn_key_white_24dp"
             android:drawablePadding="20dp"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
-            tools:ignore="RtlHardcoded" />
+            android:textColorHint="@color/colorWhite" />
     </android.support.design.widget.TextInputLayout>
 
     <CheckBox
@@ -178,10 +179,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="2dp"
             android:adjustViewBounds="false"
             android:contentDescription="@string/google1"
             android:cropToPadding="false"
+            android:padding="2dp"
             android:scaleType="fitCenter"
             android:src="@mipmap/google"
             tools:ignore="NestedWeights" />
@@ -206,8 +207,8 @@
             android:adjustViewBounds="false"
             android:contentDescription="@string/google3"
             android:cropToPadding="false"
-            android:scaleType="fitCenter"
             android:padding="2dp"
+            android:scaleType="fitCenter"
             android:src="@mipmap/google" />
 
         <ImageView
