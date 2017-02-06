@@ -24,10 +24,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference databaseRef;
 
     private ProgressDialog progressDialog;
+
+    private static int RC_SIGN_IN = 1;
+    private GoogleApiClient googleApiClient;
+    private static String TAG = "MainActivity";
+    public int alreadyGooLoged = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +136,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 100);
 
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+
         email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -170,8 +191,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 v.startAnimation(myAnim);
                 // Add working code after here google sign in part vanna khojeko ...
-
-
+                signIn();
             }
         });
 
@@ -200,7 +220,72 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Toast.makeText(MainActivity.this, "There is some problem in the service...\n\n Please retry...", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
+
+    private void signIn() {
+        progressDialog.show();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+            if (result.isSuccess()) {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+            } else {
+                // Google Sign In failed, update UI appropriately
+                // ...
+                Toast.makeText(this, "Please check your internet connection...", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            progressDialog.dismiss();
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(MainActivity.this, "This part is very much not under control now.", Toast.LENGTH_SHORT).show();
+                            // Ammendment to be done here for google login ...
+                            // Use of flag made here ... Only could think of this ....
+
+                            Intent newIntent = new Intent(MainActivity.this, SetupForNew.class);
+                            startActivity(newIntent);
+
+                        }
+                    }
+                })
+        ;
+    }
+
+
 
     private void checkLogin(String emailVal, String passwordVal) {
         progressDialog.show();
@@ -211,34 +296,41 @@ public class MainActivity extends AppCompatActivity {
                     userExistOrNot();
                 } else {
                     progressDialog.dismiss();
-                    Toast.makeText(MainActivity.this, "Sorry! We cannot log you in. Please recheck you email and password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,
+                            "Sorry! We cannot log you in. Please recheck you email and password",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
     private void userExistOrNot() {
-        final String UID = firebaseAuth.getCurrentUser().getUid();
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(UID)) {
-                    progressDialog.dismiss();
-                    Intent in = new Intent(MainActivity.this, FeedPage.class);
-                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(in);
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(MainActivity.this, "Sorry, You need to setup your account.", Toast.LENGTH_SHORT).show();
+        if (firebaseAuth.getCurrentUser() != null) {
+            progressDialog.show();
+            final String UID = firebaseAuth.getCurrentUser().getUid();
+            databaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild(UID)) {
+                        progressDialog.dismiss();
+                        Intent in = new Intent(MainActivity.this, FeedPage.class);
+                        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(in);
+                    } else {
+                        progressDialog.dismiss();
+                        // This is made to act like a flag ... later to be edited ... only solution I could think of ...
+                        alreadyGooLoged = 1;
+                        Toast.makeText(MainActivity.this, "Sorry, You need to setup your account.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Begin safe ..
-                progressDialog.dismiss();
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Being safe here ..
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
 
     @Override
