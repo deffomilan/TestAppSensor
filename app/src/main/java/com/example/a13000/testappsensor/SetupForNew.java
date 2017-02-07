@@ -56,6 +56,7 @@ public class SetupForNew extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         storageReference = FirebaseStorage.getInstance().getReference().child("ProfilePicture");
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Setting up your account!\n\nPlease be patience!!");
         progressDialog.setCancelable(false);
@@ -112,23 +113,17 @@ public class SetupForNew extends AppCompatActivity {
             public void onClick(View v) {
                 String nameVal = name.getText().toString().trim();
                 String regdNoVal = regdno.getText().toString().trim();
-                String passwordVal = password.getText().toString().trim();
 
                 if (!TextUtils.isEmpty(nameVal) &&
                         !TextUtils.isEmpty(regdNoVal) &&
-                        !TextUtils.isEmpty(passwordVal) &&
                         resultUri != null) {
-                    // This method is down below ..
-                    insertingValues(nameVal, regdNoVal, passwordVal);
+                    createForGoogle(nameVal, regdNoVal);
                 } else if (TextUtils.isEmpty(nameVal)) {
                     signUp.startAnimation(animation);
                     name.setError("This field cannot be empty");
                 } else if (TextUtils.isEmpty(regdNoVal)) {
                     signUp.startAnimation(animation);
                     regdno.setError("This field cannot be empty");
-                } else if (TextUtils.isEmpty(passwordVal)) {
-                    signUp.startAnimation(animation);
-                    password.setError("Password is must");
                 } else if (resultUri == null) {
                     signUp.startAnimation(animation);
                     Toast.makeText(SetupForNew.this, "Please select a profile picture too.", Toast.LENGTH_SHORT).show();
@@ -146,6 +141,22 @@ public class SetupForNew extends AppCompatActivity {
             }
         });
     }
+    private void createForGoogle(final String nameVal, final String regdNoVal) {
+
+        final StorageReference store_image = storageReference.child(resultUri.getLastPathSegment());
+        store_image.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                String user_id = firebaseAuth.getCurrentUser().getUid();
+                String download_uri = taskSnapshot.getDownloadUrl().toString();
+
+                databaseReference.child(user_id).child("name").setValue(nameVal);
+                databaseReference.child(user_id).child("regdno").setValue(regdNoVal);
+                databaseReference.child(user_id).child("image").setValue(download_uri);
+            }
+        });
+
+    }
 
     @Override
     protected void onDestroy() {
@@ -159,26 +170,6 @@ public class SetupForNew extends AppCompatActivity {
                 current.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    private void insertingValues(final String nameVal, final String regdNoVal, String passwordVal) {
-        progressDialog.show();
-
-        StorageReference filePath = storageReference.child(resultUri.getLastPathSegment());
-        filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                String uid = firebaseAuth.getCurrentUser().getUid();
-                Uri downloadURL = taskSnapshot.getDownloadUrl();
-                final DatabaseReference newDatabaseRef = databaseReference.child(uid);
-                newDatabaseRef.child("name").setValue(nameVal);
-                newDatabaseRef.child("regdno").setValue(regdNoVal);
-                newDatabaseRef.child("image").setValue(downloadURL.toString());
-            }
-        });
-        progressDialog.dismiss();
-        Intent in = new Intent(SetupForNew.this, FeedPage.class);
-        startActivity(in);
     }
 
 

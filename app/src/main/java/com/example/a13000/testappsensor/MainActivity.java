@@ -57,11 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
-    private static int RC_SIGN_IN = 1;
+    private static final int RC_SIGN_IN = 1;
     private GoogleApiClient googleApiClient;
-    private static String TAG = "MainActivity";
-    public int alreadyGooLoged = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,18 +133,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 100);
 
-        // Configure Google Sign In
+        // Configure Google Sign In ... Available in firebase docs ...
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
-
-        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-            }
-        });
 
         password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -220,23 +210,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // available in firebase docs ..
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(MainActivity.this, "There is some problem in the service...\n\n Please retry...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "There is problem ...\n\n Please retry...", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
     }
 
+    // Available in firebase docs ...
     private void signIn() {
         progressDialog.show();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    // Available in firebase docs ...
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -246,12 +239,13 @@ public class MainActivity extends AppCompatActivity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
             if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
+                // Google Sign In was successful, authenticate with Firebase ...
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
+                progressDialog.dismiss();
                 Toast.makeText(this, "Please check your internet connection...", Toast.LENGTH_SHORT).show();
             }
         }
@@ -271,25 +265,20 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
+                            // Later added for moving to setUpPage ... Rest available in firebase docs ...
                             progressDialog.dismiss();
                             Toast.makeText(MainActivity.this, "This part is very much not under control now.", Toast.LENGTH_SHORT).show();
-                            // Ammendment to be done here for google login ...
-                            // Use of flag made here ... Only could think of this ....
-
-                            Intent newIntent = new Intent(MainActivity.this, SetupForNew.class);
-                            startActivity(newIntent);
-
+                            userExistOrNot();
                         }
                     }
                 })
         ;
     }
 
-
-
     private void checkLogin(String emailVal, String passwordVal) {
         progressDialog.show();
-        firebaseAuth.signInWithEmailAndPassword(emailVal, passwordVal).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(emailVal, passwordVal)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
@@ -304,6 +293,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // You method yeta vako right xa ... do not move ...
     private void userExistOrNot() {
         if (firebaseAuth.getCurrentUser() != null) {
             progressDialog.show();
@@ -318,15 +308,16 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(in);
                     } else {
                         progressDialog.dismiss();
-                        // This is made to act like a flag ... later to be edited ... only solution I could think of ...
-                        alreadyGooLoged = 1;
+                        // Yo google bata login hunney bella mattra invoke hunnxa ...
                         Toast.makeText(MainActivity.this, "Sorry, You need to setup your account.", Toast.LENGTH_SHORT).show();
+                        Intent newIntent = new Intent(MainActivity.this, SetupForNew.class);
+                        startActivity(newIntent);
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    // Being safe here ..
+                    // Being safe here ... Avoiding infinite looping of progress bar I think ...
                     progressDialog.dismiss();
                 }
             });
@@ -339,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
         gradientBackgroundPainter.stop();
     }
 
+    // App first ma install grrda aauney pop up alert dialog box...
     public void checkFirstRun() {
         boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
         if (isFirstRun) {
@@ -357,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Animation hunna ko lai important xa ..
     private void toggleView(View... views) {
         for (View current : views) {
             if (current.getVisibility() == View.INVISIBLE) {
@@ -366,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // Testing left to be done .....
+    // Animation koi lagi ho ...
     @SuppressLint("NewApi")
     public void setVisible(View... views) {
         for (View item : views) {
