@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -14,9 +15,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -35,14 +43,21 @@ public class PostDo extends AppCompatActivity {
 
     private StorageReference storageRef;
     private DatabaseReference databaseRef;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUserCurrent;
+    private DatabaseReference newDataRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_do);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUserCurrent = firebaseAuth.getCurrentUser();
         storageRef = FirebaseStorage.getInstance().getReference();
         databaseRef = FirebaseDatabase.getInstance().getReference().child("ComplaintHead");
+        newDataRef = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUserCurrent.getUid());
+
 
         imageButton = (ImageButton) findViewById(R.id.imageButton);
         postButton = (Button) findViewById(R.id.postButton);
@@ -79,17 +94,37 @@ public class PostDo extends AppCompatActivity {
             filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadURL = taskSnapshot.getDownloadUrl();
-                    DatabaseReference dataRefImg = databaseRef.push();
-                    dataRefImg.child("title").setValue(titleEntered);
-                    dataRefImg.child("desc").setValue(descEntered);
-                    dataRefImg.child("image").setValue(downloadURL.toString());
+                    final Uri downloadURL = taskSnapshot.getDownloadUrl();
+                    final DatabaseReference dataRefImg = databaseRef.push();
 
+                    newDataRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            dataRefImg.child("title").setValue(titleEntered);
+                            dataRefImg.child("desc").setValue(descEntered);
+                            dataRefImg.child("image").setValue(downloadURL.toString());
+                            dataRefImg.child("UID").setValue(firebaseUserCurrent.getUid());
+                            dataRefImg.child("username")
+                                    .setValue(dataSnapshot.child("name").getValue())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Intent in = new Intent(PostDo.this, FeedPage.class);
+                                                in.putExtra("flag", 0);
+                                                startActivity(in);
+                                            }
+                                        }
+                                    })
+                            ;
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(PostDo.this, "Sorry your request cannot be carried out!", Toast.LENGTH_LONG).show();
+                        }
+                    });
                     progressDialog.dismiss();
-
-                    Intent in = new Intent(PostDo.this, FeedPage.class);
-                    in.putExtra("flag", 0);
-                    startActivity(in);
                 }
             });
         } else {
