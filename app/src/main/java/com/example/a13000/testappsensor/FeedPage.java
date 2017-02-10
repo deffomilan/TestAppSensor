@@ -103,6 +103,7 @@ public class FeedPage extends AppCompatActivity {
                     protected void populateViewHolder(ComplaintsHolder viewHolder, Complaints model, int position) {
                         viewHolder.setTitle(model.getTitle());
                         viewHolder.setDesc(model.getDesc());
+                        viewHolder.setUsername(model.getUsername());
                         viewHolder.setImage(getApplicationContext(), model.getImage());
                     }
                 };
@@ -125,6 +126,11 @@ public class FeedPage extends AppCompatActivity {
         public void setDesc(String desc) {
             TextView feedDescView = (TextView) view.findViewById(R.id.feedDescView);
             feedDescView.setText(desc);
+        }
+
+        public void setUsername(String username){
+            TextView feedUsername = (TextView) view.findViewById(R.id.username);
+            feedUsername.setText(username);
         }
 
         public void setImage(Context context, String image) {
