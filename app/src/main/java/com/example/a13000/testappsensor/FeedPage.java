@@ -103,6 +103,7 @@ public class FeedPage extends AppCompatActivity {
                         viewHolder.setTitle(model.getTitle());
                         viewHolder.setDesc(model.getDesc());
                         viewHolder.setUsername(model.getUsername());
+                        viewHolder.setLike_button(key_id);
                         viewHolder.setImage(getApplicationContext(), model.getImage());
 
                         // Like button onClickListener ...
@@ -144,12 +145,18 @@ public class FeedPage extends AppCompatActivity {
         View view;
         ImageButton like_button;
         ImageButton comment_button;
-        ImageButton dislike_button;
+
+
+        private FirebaseAuth auth_like;
+        private DatabaseReference db_ref_like;
 
         public ComplaintsHolder(View itemView) {
             super(itemView);
             view = itemView;
             like_button = (ImageButton) view.findViewById(R.id.likeButton);
+            db_ref_like = FirebaseDatabase.getInstance().getReference().child("Likes");
+            auth_like = FirebaseAuth.getInstance();
+            db_ref_like.keepSynced(true);
         }
 
         public void setTitle(String title) {
@@ -170,6 +177,24 @@ public class FeedPage extends AppCompatActivity {
         public void setImage(Context context, String image) {
             ImageView feedImageView = (ImageView) view.findViewById(R.id.feedImageView);
             Picasso.with(context).load(image).into(feedImageView);
+        }
+
+        public void setLike_button(final String key_id) {
+            db_ref_like.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.child(key_id).hasChild(auth_like.getCurrentUser().getUid())) {
+                        like_button.setImageResource(R.mipmap.ic_thumb_down_black_24dp);
+                    } else {
+                        like_button.setImageResource(R.mipmap.ic_thumb_up_black_24dp);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
