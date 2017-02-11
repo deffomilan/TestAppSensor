@@ -50,7 +50,6 @@ public class FeedPage extends AppCompatActivity {
         };
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("ComplaintHead");
-
         //birrsyo yessle k garrxa vanera ...
         //Figure out later ...
         databaseReferenceForUsers = FirebaseDatabase.getInstance().getReference().child("Users");
