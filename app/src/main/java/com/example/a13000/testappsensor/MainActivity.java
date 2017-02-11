@@ -267,7 +267,6 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // Later added for moving to setUpPage ... Rest available in firebase docs ...
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "This part is very much not under control now.", Toast.LENGTH_SHORT).show();
                             userExistOrNot();
                         }
                     }

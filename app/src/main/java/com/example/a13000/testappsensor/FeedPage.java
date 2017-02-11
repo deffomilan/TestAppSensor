@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,16 +18,20 @@ import android.widget.Toast;
 import com.baoyz.widget.PullRefreshLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class FeedPage extends AppCompatActivity {
 
     private RecyclerView listComplaints;
-    private DatabaseReference databaseReference,databaseReferenceForUsers;
+    private DatabaseReference databaseReference, databaseReferenceForUsers, databaseReferenceLikes;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    private boolean like_val = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,8 @@ public class FeedPage extends AppCompatActivity {
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                // Checks if the user is present in the database or not ...
                 if (firebaseAuth.getCurrentUser() == null) {
                     Intent in = new Intent(FeedPage.this, MainActivity.class);
                     in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -53,36 +60,27 @@ public class FeedPage extends AppCompatActivity {
         //birrsyo yessle k garrxa vanera ...
         //Figure out later ...
         databaseReferenceForUsers = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReferenceLikes = FirebaseDatabase.getInstance().getReference().child("Likes");
+
+        // Firebase offline capabilities ...
         databaseReferenceForUsers.keepSynced(true);
+        databaseReference.keepSynced(true);
+        databaseReferenceLikes.keepSynced(true);
 
         int callingActivity = getIntent().getIntExtra("flag", 1);
         if (callingActivity == 0) {
             Toast.makeText(this, "Thank you! Your complaint has been posted and will soon be monitored and rectified", Toast.LENGTH_LONG).show();
         }
 
+        // Swipe down to refresh hunney part ...
         layout.setRefreshStyle(PullRefreshLayout.STYLE_MATERIAL);
         layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                FirebaseRecyclerAdapter<Complaints, ComplaintsHolder> firebaseRecyclerAdapter =
-                        new FirebaseRecyclerAdapter<Complaints, ComplaintsHolder>(
-                                Complaints.class,
-                                R.layout.list_card_view,
-                                ComplaintsHolder.class,
-                                databaseReference
-                        ) {
-                            @Override
-                            protected void populateViewHolder(ComplaintsHolder viewHolder, Complaints model, int position) {
-                                viewHolder.setTitle(model.getTitle());
-                                viewHolder.setDesc(model.getDesc());
-                                viewHolder.setImage(getApplicationContext(), model.getImage());
-                            }
-                        };
-                listComplaints.setAdapter(firebaseRecyclerAdapter);
+                // Think for this some time later ...
             }
         });
         layout.setRefreshing(false);
-
     }
 
     @Override
@@ -91,6 +89,7 @@ public class FeedPage extends AppCompatActivity {
 
         firebaseAuth.addAuthStateListener(firebaseAuthListener);
 
+        // Inflating recycler view ... hard to explain ... maile bujhhya xaina :D
         FirebaseRecyclerAdapter<Complaints, ComplaintsHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Complaints, ComplaintsHolder>(
                         Complaints.class,
@@ -100,10 +99,42 @@ public class FeedPage extends AppCompatActivity {
                 ) {
                     @Override
                     protected void populateViewHolder(ComplaintsHolder viewHolder, Complaints model, int position) {
+                        final String key_id = getRef(position).getKey();
                         viewHolder.setTitle(model.getTitle());
                         viewHolder.setDesc(model.getDesc());
                         viewHolder.setUsername(model.getUsername());
                         viewHolder.setImage(getApplicationContext(), model.getImage());
+
+                        // Like button onClickListener ...
+                        viewHolder.like_button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                like_val = true;
+                                databaseReferenceLikes.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (like_val) {
+                                            if (dataSnapshot.child(key_id).hasChild(firebaseAuth.getCurrentUser().getUid())) {
+                                                databaseReferenceLikes.child(key_id)
+                                                        .child(firebaseAuth.getCurrentUser().getUid())
+                                                        .removeValue();
+                                                like_val = false;
+                                            } else {
+                                                databaseReferenceLikes.child(key_id)
+                                                        .child(firebaseAuth.getCurrentUser().getUid())
+                                                        .setValue("Username here");
+                                                like_val = false;
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Toast.makeText(FeedPage.this, "Error liking the post", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
                     }
                 };
         listComplaints.setAdapter(firebaseRecyclerAdapter);
@@ -111,10 +142,14 @@ public class FeedPage extends AppCompatActivity {
 
     public static class ComplaintsHolder extends RecyclerView.ViewHolder {
         View view;
+        ImageButton like_button;
+        ImageButton comment_button;
+        ImageButton dislike_button;
 
         public ComplaintsHolder(View itemView) {
             super(itemView);
             view = itemView;
+            like_button = (ImageButton) view.findViewById(R.id.likeButton);
         }
 
         public void setTitle(String title) {
