@@ -15,8 +15,7 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".Signup"
             android:screenOrientation="portrait"
@@ -25,6 +24,7 @@
         <activity android:name=".FeedPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -32,9 +32,11 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".PostDo" />
-        <activity android:name=".SetupForNew"
+        <activity
+            android:name=".SetupForNew"
             android:theme="@style/AppTheme.NoTitle"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".SingleFeed"></activity>
     </application>
 
 </manifest>

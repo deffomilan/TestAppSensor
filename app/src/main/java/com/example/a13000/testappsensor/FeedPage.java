@@ -52,6 +52,7 @@ public class FeedPage extends AppCompatActivity {
                     Intent in = new Intent(FeedPage.this, MainActivity.class);
                     in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(in);
+                    finish();
                 }
             }
         };
@@ -134,6 +135,15 @@ public class FeedPage extends AppCompatActivity {
                                         Toast.makeText(FeedPage.this, "Error liking the post", Toast.LENGTH_SHORT).show();
                                     }
                                 });
+                            }
+                        });
+
+                        viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent in = new Intent(FeedPage.this,SingleFeed.class);
+                                in.putExtra("key_id",key_id);
+                                startActivity(in);
                             }
                         });
                     }
