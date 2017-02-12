@@ -15,7 +15,7 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Signup"
             android:screenOrientation="portrait"
@@ -24,8 +24,7 @@
         <activity android:name=".FeedPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -36,7 +35,16 @@
             android:name=".SetupForNew"
             android:theme="@style/AppTheme.NoTitle"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".SingleFeed"></activity>
+        <activity android:name=".SingleFeed" />
+        <activity
+            android:name=".SplashScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitle">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
