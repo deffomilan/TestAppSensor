@@ -58,6 +58,8 @@ public class PostDo extends AppCompatActivity {
         databaseRef = FirebaseDatabase.getInstance().getReference().child("ComplaintHead");
         newDataRef = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUserCurrent.getUid());
 
+        databaseRef.keepSynced(true);
+        newDataRef.keepSynced(true);
 
         imageButton = (ImageButton) findViewById(R.id.imageButton);
         postButton = (Button) findViewById(R.id.postButton);
@@ -66,6 +68,7 @@ public class PostDo extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(" Posting ...\n\n Please wait... !!!");
+        progressDialog.setCancelable(false);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +116,7 @@ public class PostDo extends AppCompatActivity {
                                                 Intent in = new Intent(PostDo.this, FeedPage.class);
                                                 in.putExtra("flag", 0);
                                                 startActivity(in);
+                                                finish();
                                             }
                                         }
                                     })

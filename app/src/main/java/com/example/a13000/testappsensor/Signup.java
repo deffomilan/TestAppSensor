@@ -64,6 +64,7 @@ public class Signup extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference().child("ProfilePicture");
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Setting up your account!\n\nPlease be patience!!");
+        progressDialog.setCancelable(false);
 
         // Casting everything ...
 
