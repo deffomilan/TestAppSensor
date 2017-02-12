@@ -132,25 +132,31 @@ public class Signup extends AppCompatActivity {
                 String regdNoVal = regdno.getText().toString().trim();
                 String passwordVal = password.getText().toString().trim();
 
-                if (!TextUtils.isEmpty(nameVal) &&
-                        !TextUtils.isEmpty(emailVal) &&
-                        !TextUtils.isEmpty(regdNoVal) &&
-                        !TextUtils.isEmpty(passwordVal) &&
-                        resultUri != null) {
-                    // This method is down below ..
-                    registrationBegins(nameVal, emailVal, regdNoVal, passwordVal);
-                } else if (TextUtils.isEmpty(nameVal)) {
-                    signUp.startAnimation(animation);
-                    name.setError("This field cannot be empty");
-                } else if (TextUtils.isEmpty(regdNoVal)) {
-                    signUp.startAnimation(animation);
-                    regdno.setError("This field cannot be empty");
-                } else if (TextUtils.isEmpty(passwordVal)) {
-                    signUp.startAnimation(animation);
-                    password.setError("Password is must");
-                } else if (resultUri == null) {
-                    signUp.startAnimation(animation);
-                    Toast.makeText(Signup.this, "Please select a profile picture too.", Toast.LENGTH_SHORT).show();
+                int pass_len = passwordVal.length();
+                // This one is easy so please see yourself :D ...
+                if (pass_len < 8) {
+                    password.setError("Your password must me more that 8 characters.");
+                } else {
+                    if (!TextUtils.isEmpty(nameVal) &&
+                            !TextUtils.isEmpty(emailVal) &&
+                            !TextUtils.isEmpty(regdNoVal) &&
+                            !TextUtils.isEmpty(passwordVal) &&
+                            resultUri != null) {
+                        // This method is down below ..
+                        registrationBegins(nameVal, emailVal, regdNoVal, passwordVal);
+                    } else if (TextUtils.isEmpty(nameVal)) {
+                        signUp.startAnimation(animation);
+                        name.setError("This field cannot be empty");
+                    } else if (TextUtils.isEmpty(regdNoVal)) {
+                        signUp.startAnimation(animation);
+                        regdno.setError("This field cannot be empty");
+                    } else if (TextUtils.isEmpty(passwordVal)) {
+                        signUp.startAnimation(animation);
+                        password.setError("Password is must");
+                    } else if (resultUri == null) {
+                        signUp.startAnimation(animation);
+                        Toast.makeText(Signup.this, "Please select a profile picture too.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
